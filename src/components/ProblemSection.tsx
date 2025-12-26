@@ -1,4 +1,6 @@
 import { AlertTriangle, Clock, FileX, Users } from "lucide-react";
+import { motion } from "framer-motion";
+import { useScrollAnimation, fadeInUp, staggerContainer, staggerItem } from "@/hooks/useScrollAnimation";
 
 const problems = [
   {
@@ -24,11 +26,20 @@ const problems = [
 ];
 
 const ProblemSection = () => {
+  const { ref, isInView } = useScrollAnimation();
+
   return (
     <section id="problem" className="section-padding bg-secondary/30">
       <div className="section-container">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <motion.div 
+          ref={ref}
+          className="text-center max-w-3xl mx-auto mb-16"
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+          variants={fadeInUp}
+          transition={{ duration: 0.6 }}
+        >
           <span className="inline-block text-sm font-semibold text-destructive uppercase tracking-wider mb-4">
             The Problem
           </span>
@@ -39,15 +50,20 @@ const ProblemSection = () => {
             Every year, millions of patients face delays, errors, and frustration because their 
             medical records are locked away in silos they can't access or control.
           </p>
-        </div>
+        </motion.div>
 
         {/* Problem Cards */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {problems.map((problem, index) => (
-            <div
+        <motion.div 
+          className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6"
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+          variants={staggerContainer}
+        >
+          {problems.map((problem) => (
+            <motion.div
               key={problem.title}
               className="card-elevated p-6 text-center group"
-              style={{ animationDelay: `${index * 100}ms` }}
+              variants={staggerItem}
             >
               <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-destructive/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                 <problem.icon className="w-7 h-7 text-destructive" />
@@ -58,12 +74,17 @@ const ProblemSection = () => {
               <p className="text-sm text-muted-foreground leading-relaxed">
                 {problem.description}
               </p>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         {/* Stats */}
-        <div className="mt-16 p-8 rounded-3xl bg-foreground text-primary-foreground">
+        <motion.div 
+          className="mt-16 p-8 rounded-3xl bg-foreground text-primary-foreground"
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+        >
           <div className="grid sm:grid-cols-3 gap-8 text-center">
             <div>
               <p className="text-4xl sm:text-5xl font-bold mb-2">30%</p>
@@ -78,7 +99,7 @@ const ProblemSection = () => {
               <p className="text-primary-foreground/70">wasted on duplicate procedures</p>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

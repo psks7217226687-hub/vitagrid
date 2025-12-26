@@ -1,4 +1,6 @@
 import { Sparkles, Watch, IdCard, Globe } from "lucide-react";
+import { motion } from "framer-motion";
+import { useScrollAnimation, fadeInUp } from "@/hooks/useScrollAnimation";
 
 const roadmapItems = [
   {
@@ -32,6 +34,8 @@ const roadmapItems = [
 ];
 
 const RoadmapSection = () => {
+  const { ref, isInView } = useScrollAnimation();
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case "In Development":
@@ -49,7 +53,14 @@ const RoadmapSection = () => {
     <section className="section-padding">
       <div className="section-container">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <motion.div 
+          ref={ref}
+          className="text-center max-w-3xl mx-auto mb-16"
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+          variants={fadeInUp}
+          transition={{ duration: 0.6 }}
+        >
           <span className="inline-block text-sm font-semibold text-primary uppercase tracking-wider mb-4">
             Future Roadmap
           </span>
@@ -59,7 +70,7 @@ const RoadmapSection = () => {
           <p className="text-lg text-muted-foreground">
             We're constantly evolving VitaGrid to better serve patients and healthcare providers worldwide.
           </p>
-        </div>
+        </motion.div>
 
         {/* Roadmap Timeline */}
         <div className="max-w-3xl mx-auto">
@@ -68,7 +79,13 @@ const RoadmapSection = () => {
             <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-border" />
             
             {roadmapItems.map((item, index) => (
-              <div key={item.title} className="relative flex gap-6 pb-12 last:pb-0">
+              <motion.div 
+                key={item.title} 
+                className="relative flex gap-6 pb-12 last:pb-0"
+                initial={{ opacity: 0, x: -30 }}
+                animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
+                transition={{ duration: 0.5, delay: index * 0.15 }}
+              >
                 {/* Timeline dot */}
                 <div className="relative z-10">
                   <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-md">
@@ -93,7 +110,7 @@ const RoadmapSection = () => {
                     Target: {item.quarter}
                   </span>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>

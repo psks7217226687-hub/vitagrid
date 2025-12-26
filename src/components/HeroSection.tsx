@@ -1,4 +1,5 @@
 import { ArrowRight, Smartphone, Shield, Zap } from "lucide-react";
+import { motion } from "framer-motion";
 
 const HeroSection = () => {
   return (
@@ -16,30 +17,55 @@ const HeroSection = () => {
       <div className="section-container py-12 lg:py-20">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Left Content */}
-          <div className="text-center lg:text-left">
+          <motion.div 
+            className="text-center lg:text-left"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
             {/* Badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-teal-50 border border-teal-100 mb-6 animate-fade-in-up">
+            <motion.div 
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-teal-50 border border-teal-100 mb-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+            >
               <Shield className="w-4 h-4 text-primary" />
               <span className="text-sm font-medium text-primary">
                 Patient-Owned Health Records
               </span>
-            </div>
+            </motion.div>
 
             {/* Headline */}
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-foreground leading-tight mb-6 animate-fade-in-up delay-100">
+            <motion.h1 
+              className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-foreground leading-tight mb-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
               Your Medical Records.{" "}
               <span className="gradient-text">One Grid.</span>{" "}
               Total Control.
-            </h1>
+            </motion.h1>
 
             {/* Subheadline */}
-            <p className="text-lg sm:text-xl text-muted-foreground leading-relaxed mb-8 max-w-xl mx-auto lg:mx-0 animate-fade-in-up delay-200">
+            <motion.p 
+              className="text-lg sm:text-xl text-muted-foreground leading-relaxed mb-8 max-w-xl mx-auto lg:mx-0"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+            >
               VitaGrid is a secure, patient-owned health wallet that unifies medical records 
               and enables instant, consent-based access — even offline.
-            </p>
+            </motion.p>
 
             {/* CTAs */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start animate-fade-in-up delay-300">
+            <motion.div 
+              className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+            >
               <a href="#how-it-works" className="btn-primary">
                 See How It Works
                 <ArrowRight className="w-5 h-5" />
@@ -48,10 +74,15 @@ const HeroSection = () => {
                 <Zap className="w-5 h-5 text-accent" />
                 Emergency Access Demo
               </a>
-            </div>
+            </motion.div>
 
             {/* Trust indicators */}
-            <div className="flex flex-wrap gap-6 justify-center lg:justify-start mt-10 animate-fade-in-up delay-400">
+            <motion.div 
+              className="flex flex-wrap gap-6 justify-center lg:justify-start mt-10"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+            >
               <div className="flex items-center gap-2 text-muted-foreground">
                 <Shield className="w-5 h-5 text-primary" />
                 <span className="text-sm font-medium">End-to-End Encrypted</span>
@@ -60,11 +91,16 @@ const HeroSection = () => {
                 <Smartphone className="w-5 h-5 text-primary" />
                 <span className="text-sm font-medium">Works Offline</span>
               </div>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
           {/* Right Visual - Mock Dashboard */}
-          <div className="relative animate-fade-in-up delay-200">
+          <motion.div 
+            className="relative"
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.7, delay: 0.3 }}
+          >
             <div className="relative">
               {/* Main card */}
               <div className="card-elevated p-6 sm:p-8">
@@ -119,7 +155,11 @@ const HeroSection = () => {
               </div>
 
               {/* Floating QR card */}
-              <div className="absolute -bottom-6 -right-6 card-elevated p-4 animate-float shadow-glow">
+              <motion.div 
+                className="absolute -bottom-6 -right-6 card-elevated p-4 shadow-glow"
+                animate={{ y: [0, -8, 0] }}
+                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+              >
                 <div className="flex items-center gap-3">
                   <div className="w-14 h-14 bg-foreground rounded-lg flex items-center justify-center">
                     <div className="w-10 h-10 bg-background rounded grid grid-cols-3 gap-0.5 p-1">
@@ -136,14 +176,18 @@ const HeroSection = () => {
                     <p className="text-xs text-muted-foreground">Scan for access</p>
                   </div>
                 </div>
-              </div>
+              </motion.div>
 
               {/* Floating shield */}
-              <div className="absolute -top-4 -left-4 card-elevated p-3 animate-pulse-soft">
+              <motion.div 
+                className="absolute -top-4 -left-4 card-elevated p-3"
+                animate={{ scale: [1, 1.1, 1] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              >
                 <Shield className="w-8 h-8 text-primary" />
-              </div>
+              </motion.div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

@@ -1,4 +1,6 @@
 import { Upload, Lock, WifiOff, QrCode, CheckCircle2 } from "lucide-react";
+import { motion } from "framer-motion";
+import { useScrollAnimation, fadeInUp } from "@/hooks/useScrollAnimation";
 
 const steps = [
   {
@@ -29,11 +31,20 @@ const steps = [
 ];
 
 const HowItWorksSection = () => {
+  const { ref, isInView } = useScrollAnimation();
+
   return (
     <section id="how-it-works" className="section-padding">
       <div className="section-container">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <motion.div 
+          ref={ref}
+          className="text-center max-w-3xl mx-auto mb-16"
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+          variants={fadeInUp}
+          transition={{ duration: 0.6 }}
+        >
           <span className="inline-block text-sm font-semibold text-primary uppercase tracking-wider mb-4">
             How It Works
           </span>
@@ -43,7 +54,7 @@ const HowItWorksSection = () => {
           <p className="text-lg text-muted-foreground">
             From upload to consent, VitaGrid makes managing your health records effortless.
           </p>
-        </div>
+        </motion.div>
 
         {/* Steps Timeline */}
         <div className="relative max-w-4xl mx-auto">
@@ -51,11 +62,14 @@ const HowItWorksSection = () => {
           <div className="absolute left-8 lg:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary via-accent to-primary lg:-translate-x-1/2" />
           
           {steps.map((step, index) => (
-            <div
+            <motion.div
               key={step.title}
               className={`relative flex items-start gap-6 mb-12 last:mb-0 ${
                 index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'
               }`}
+              initial={{ opacity: 0, x: index % 2 === 0 ? -30 : 30 }}
+              animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: index % 2 === 0 ? -30 : 30 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
             >
               {/* Step number circle */}
               <div className="absolute left-8 lg:left-1/2 -translate-x-1/2 z-10">
@@ -84,7 +98,7 @@ const HowItWorksSection = () => {
                   </p>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>

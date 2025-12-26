@@ -1,11 +1,53 @@
 import { QrCode, Smartphone, Clock, CheckCircle2 } from "lucide-react";
+import { motion } from "framer-motion";
+import { useScrollAnimation, fadeInUp, staggerContainer, staggerItem } from "@/hooks/useScrollAnimation";
+
+const demoSteps = [
+  {
+    icon: QrCode,
+    title: "Doctor Scans QR",
+    description: "ER doctor scans patient's VitaGrid QR code on phone or bracelet",
+    bgColor: "bg-teal-50",
+    iconColor: "text-primary",
+  },
+  {
+    icon: Smartphone,
+    title: "Emergency Info Opens",
+    description: "Critical data appears instantly: blood type, allergies, medications",
+    bgColor: "bg-lime-50",
+    iconColor: "text-accent",
+  },
+  {
+    icon: Clock,
+    title: "Full History Access",
+    description: "Doctor can request extended access to full medical history",
+    bgColor: "bg-teal-50",
+    iconColor: "text-primary",
+  },
+  {
+    icon: CheckCircle2,
+    title: "Auto-Expires",
+    description: "Access automatically expires after the emergency window",
+    bgColor: "bg-lime-50",
+    iconColor: "text-accent",
+  },
+];
 
 const DemoSection = () => {
+  const { ref, isInView } = useScrollAnimation();
+
   return (
     <section id="demo" className="section-padding">
       <div className="section-container">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <motion.div 
+          ref={ref}
+          className="text-center max-w-3xl mx-auto mb-16"
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+          variants={fadeInUp}
+          transition={{ duration: 0.6 }}
+        >
           <span className="inline-block text-sm font-semibold text-accent uppercase tracking-wider mb-4">
             Emergency Demo
           </span>
@@ -17,75 +59,54 @@ const DemoSection = () => {
             See how VitaGrid enables instant, secure access to critical health information 
             in emergency situations — even without internet.
           </p>
-        </div>
+        </motion.div>
 
         {/* Demo Flow */}
         <div className="max-w-5xl mx-auto">
-          <div className="grid lg:grid-cols-4 gap-6 items-start">
-            {/* Step 1 */}
-            <div className="card-elevated p-6 text-center relative">
-              <div className="step-number mx-auto mb-4">1</div>
-              <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-teal-50 flex items-center justify-center">
-                <QrCode className="w-8 h-8 text-primary" />
-              </div>
-              <h3 className="font-bold text-foreground mb-2">Doctor Scans QR</h3>
-              <p className="text-sm text-muted-foreground">
-                ER doctor scans patient's VitaGrid QR code on phone or bracelet
-              </p>
-              {/* Arrow */}
-              <div className="hidden lg:block absolute -right-3 top-1/2 -translate-y-1/2 w-6 h-6 text-primary">
-                →
-              </div>
-            </div>
-
-            {/* Step 2 */}
-            <div className="card-elevated p-6 text-center relative">
-              <div className="step-number mx-auto mb-4">2</div>
-              <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-lime-50 flex items-center justify-center">
-                <Smartphone className="w-8 h-8 text-accent" />
-              </div>
-              <h3 className="font-bold text-foreground mb-2">Emergency Info Opens</h3>
-              <p className="text-sm text-muted-foreground">
-                Critical data appears instantly: blood type, allergies, medications
-              </p>
-              <div className="hidden lg:block absolute -right-3 top-1/2 -translate-y-1/2 w-6 h-6 text-primary">
-                →
-              </div>
-            </div>
-
-            {/* Step 3 */}
-            <div className="card-elevated p-6 text-center relative">
-              <div className="step-number mx-auto mb-4">3</div>
-              <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-teal-50 flex items-center justify-center">
-                <Clock className="w-8 h-8 text-primary" />
-              </div>
-              <h3 className="font-bold text-foreground mb-2">Full History Access</h3>
-              <p className="text-sm text-muted-foreground">
-                Doctor can request extended access to full medical history
-              </p>
-              <div className="hidden lg:block absolute -right-3 top-1/2 -translate-y-1/2 w-6 h-6 text-primary">
-                →
-              </div>
-            </div>
-
-            {/* Step 4 */}
-            <div className="card-elevated p-6 text-center">
-              <div className="step-number mx-auto mb-4">4</div>
-              <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-lime-50 flex items-center justify-center">
-                <CheckCircle2 className="w-8 h-8 text-accent" />
-              </div>
-              <h3 className="font-bold text-foreground mb-2">Auto-Expires</h3>
-              <p className="text-sm text-muted-foreground">
-                Access automatically expires after the emergency window
-              </p>
-            </div>
-          </div>
+          <motion.div 
+            className="grid lg:grid-cols-4 gap-6 items-start"
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
+            variants={staggerContainer}
+          >
+            {demoSteps.map((step, index) => (
+              <motion.div
+                key={step.title}
+                className="card-elevated p-6 text-center relative"
+                variants={staggerItem}
+              >
+                <div className="step-number mx-auto mb-4">{index + 1}</div>
+                <div className={`w-16 h-16 mx-auto mb-4 rounded-2xl ${step.bgColor} flex items-center justify-center`}>
+                  <step.icon className={`w-8 h-8 ${step.iconColor}`} />
+                </div>
+                <h3 className="font-bold text-foreground mb-2">{step.title}</h3>
+                <p className="text-sm text-muted-foreground">
+                  {step.description}
+                </p>
+                {/* Arrow */}
+                {index < demoSteps.length - 1 && (
+                  <div className="hidden lg:block absolute -right-3 top-1/2 -translate-y-1/2 w-6 h-6 text-primary">
+                    →
+                  </div>
+                )}
+              </motion.div>
+            ))}
+          </motion.div>
 
           {/* Emergency Card Visual */}
-          <div className="mt-12 max-w-md mx-auto">
+          <motion.div 
+            className="mt-12 max-w-md mx-auto"
+            initial={{ opacity: 0, y: 40 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+          >
             <div className="card-elevated p-6 border-2 border-destructive/20 bg-gradient-to-br from-destructive/5 to-background">
               <div className="flex items-center gap-3 mb-4 pb-4 border-b border-border">
-                <div className="w-3 h-3 rounded-full bg-destructive animate-pulse" />
+                <motion.div 
+                  className="w-3 h-3 rounded-full bg-destructive"
+                  animate={{ scale: [1, 1.2, 1] }}
+                  transition={{ duration: 1, repeat: Infinity }}
+                />
                 <span className="font-bold text-destructive">EMERGENCY PROFILE</span>
               </div>
               
@@ -118,7 +139,7 @@ const DemoSection = () => {
                 </span>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>
