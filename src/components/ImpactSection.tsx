@@ -1,4 +1,6 @@
 import { Heart, DollarSign, Wifi, HandHeart } from "lucide-react";
+import { motion } from "framer-motion";
+import { useScrollAnimation, fadeInUp, staggerContainer, staggerItem } from "@/hooks/useScrollAnimation";
 
 const impacts = [
   {
@@ -32,11 +34,20 @@ const impacts = [
 ];
 
 const ImpactSection = () => {
+  const { ref, isInView } = useScrollAnimation();
+
   return (
     <section id="impact" className="section-padding bg-secondary/30">
       <div className="section-container">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <motion.div 
+          ref={ref}
+          className="text-center max-w-3xl mx-auto mb-16"
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+          variants={fadeInUp}
+          transition={{ duration: 0.6 }}
+        >
           <span className="inline-block text-sm font-semibold text-primary uppercase tracking-wider mb-4">
             Impact
           </span>
@@ -47,14 +58,20 @@ const ImpactSection = () => {
             VitaGrid isn't just a technology — it's a movement toward patient empowerment 
             and better healthcare outcomes for everyone.
           </p>
-        </div>
+        </motion.div>
 
         {/* Impact Cards */}
-        <div className="grid sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
+        <motion.div 
+          className="grid sm:grid-cols-2 gap-6 max-w-4xl mx-auto"
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+          variants={staggerContainer}
+        >
           {impacts.map((impact) => (
-            <div
+            <motion.div
               key={impact.title}
               className="card-elevated p-6 group overflow-hidden relative"
+              variants={staggerItem}
             >
               {/* Background gradient accent */}
               <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${impact.gradient} opacity-5 rounded-full blur-2xl group-hover:opacity-10 transition-opacity`} />
@@ -72,13 +89,17 @@ const ImpactSection = () => {
                 </p>
                 
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary font-semibold text-sm">
-                  <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+                  <motion.span 
+                    className="w-2 h-2 rounded-full bg-primary"
+                    animate={{ scale: [1, 1.3, 1] }}
+                    transition={{ duration: 1.5, repeat: Infinity }}
+                  />
                   {impact.stat}
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

@@ -1,4 +1,6 @@
 import { Wallet, QrCode, WifiOff, Clock, Eye } from "lucide-react";
+import { motion } from "framer-motion";
+import { useScrollAnimation, fadeInUp, staggerContainer, staggerItem } from "@/hooks/useScrollAnimation";
 
 const features = [
   {
@@ -34,11 +36,20 @@ const features = [
 ];
 
 const FeaturesSection = () => {
+  const { ref, isInView } = useScrollAnimation();
+
   return (
     <section id="features" className="section-padding bg-secondary/30">
       <div className="section-container">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <motion.div 
+          ref={ref}
+          className="text-center max-w-3xl mx-auto mb-16"
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+          variants={fadeInUp}
+          transition={{ duration: 0.6 }}
+        >
           <span className="inline-block text-sm font-semibold text-primary uppercase tracking-wider mb-4">
             Key Features
           </span>
@@ -49,16 +60,22 @@ const FeaturesSection = () => {
           <p className="text-lg text-muted-foreground">
             Powerful features designed with privacy-first principles and real-world healthcare needs in mind.
           </p>
-        </div>
+        </motion.div>
 
         {/* Features Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <motion.div 
+          className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+          variants={staggerContainer}
+        >
           {features.map((feature, index) => (
-            <div
+            <motion.div
               key={feature.title}
               className={`card-elevated p-6 group ${
                 index === features.length - 1 ? 'md:col-span-2 lg:col-span-1' : ''
               }`}
+              variants={staggerItem}
             >
               {/* Icon */}
               <div className={`w-14 h-14 mb-5 rounded-2xl bg-gradient-to-br ${feature.gradient} flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}>
@@ -72,9 +89,9 @@ const FeaturesSection = () => {
               <p className="text-muted-foreground leading-relaxed">
                 {feature.description}
               </p>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

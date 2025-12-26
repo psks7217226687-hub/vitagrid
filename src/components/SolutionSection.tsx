@@ -1,4 +1,6 @@
 import { Upload, Lock, Share2, ArrowRight } from "lucide-react";
+import { motion } from "framer-motion";
+import { useScrollAnimation, fadeInUp, staggerContainer, staggerItem } from "@/hooks/useScrollAnimation";
 
 const steps = [
   {
@@ -25,11 +27,20 @@ const steps = [
 ];
 
 const SolutionSection = () => {
+  const { ref, isInView } = useScrollAnimation();
+
   return (
     <section id="solution" className="section-padding">
       <div className="section-container">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <motion.div 
+          ref={ref}
+          className="text-center max-w-3xl mx-auto mb-16"
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+          variants={fadeInUp}
+          transition={{ duration: 0.6 }}
+        >
           <span className="inline-block text-sm font-semibold text-primary uppercase tracking-wider mb-4">
             The Solution
           </span>
@@ -40,16 +51,21 @@ const SolutionSection = () => {
             A patient-first health data grid that puts you in complete control of your medical records. 
             Secure, unified, and accessible — even when you're offline.
           </p>
-        </div>
+        </motion.div>
 
         {/* 3-Step Flow */}
         <div className="relative">
           {/* Connection line */}
           <div className="hidden lg:block absolute top-1/2 left-1/4 right-1/4 h-0.5 bg-gradient-to-r from-primary via-accent to-primary opacity-20 -translate-y-1/2" />
           
-          <div className="grid lg:grid-cols-3 gap-8">
+          <motion.div 
+            className="grid lg:grid-cols-3 gap-8"
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
+            variants={staggerContainer}
+          >
             {steps.map((step, index) => (
-              <div key={step.title} className="relative">
+              <motion.div key={step.title} className="relative" variants={staggerItem}>
                 <div className="card-elevated p-8 text-center h-full">
                   {/* Step number */}
                   <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-gradient-to-r from-primary to-accent text-primary-foreground text-sm font-bold">
@@ -82,13 +98,18 @@ const SolutionSection = () => {
                     </div>
                   </div>
                 )}
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
 
         {/* Key Benefits */}
-        <div className="mt-16 grid sm:grid-cols-3 gap-6">
+        <motion.div 
+          className="mt-16 grid sm:grid-cols-3 gap-6"
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+          transition={{ duration: 0.6, delay: 0.5 }}
+        >
           <div className="flex items-center gap-4 p-4 rounded-2xl bg-teal-50 border border-teal-100">
             <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center shrink-0">
               <span className="text-2xl">🔐</span>
@@ -118,7 +139,7 @@ const SolutionSection = () => {
               <p className="text-sm text-muted-foreground">Works without internet</p>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
