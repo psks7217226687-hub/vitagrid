@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Menu, X, LogOut } from "lucide-react";
+import { Menu, X, LogOut, LayoutDashboard } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { User } from "@supabase/supabase-js";
 import vitagridLogo from "@/assets/vitagrid-logo.jpg";
@@ -67,13 +67,22 @@ const Navbar = () => {
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center gap-3">
             {user ? (
-              <button
-                onClick={handleSignOut}
-                className="flex items-center gap-2 text-muted-foreground hover:text-foreground font-medium transition-colors"
-              >
-                <LogOut className="w-4 h-4" />
-                Sign Out
-              </button>
+              <>
+                <Link
+                  to="/dashboard"
+                  className="flex items-center gap-2 text-muted-foreground hover:text-foreground font-medium transition-colors"
+                >
+                  <LayoutDashboard className="w-4 h-4" />
+                  Dashboard
+                </Link>
+                <button
+                  onClick={handleSignOut}
+                  className="flex items-center gap-2 text-muted-foreground hover:text-foreground font-medium transition-colors"
+                >
+                  <LogOut className="w-4 h-4" />
+                  Sign Out
+                </button>
+              </>
             ) : (
               <Link
                 to="/auth"
@@ -113,13 +122,23 @@ const Navbar = () => {
                 </a>
               ))}
               {user ? (
-                <button
-                  onClick={handleSignOut}
-                  className="btn-primary text-center mt-2 flex items-center justify-center gap-2"
-                >
-                  <LogOut className="w-4 h-4" />
-                  Sign Out
-                </button>
+                <>
+                  <Link
+                    to="/dashboard"
+                    onClick={() => setIsOpen(false)}
+                    className="flex items-center gap-2 text-muted-foreground hover:text-foreground font-medium transition-colors py-2"
+                  >
+                    <LayoutDashboard className="w-4 h-4" />
+                    Dashboard
+                  </Link>
+                  <button
+                    onClick={handleSignOut}
+                    className="btn-primary text-center mt-2 flex items-center justify-center gap-2"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    Sign Out
+                  </button>
+                </>
               ) : (
                 <Link
                   to="/auth"
