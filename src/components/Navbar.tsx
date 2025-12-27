@@ -1,9 +1,31 @@
-import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { Menu, X, LogOut } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { User } from "@supabase/supabase-js";
 import vitagridLogo from "@/assets/vitagrid-logo.jpg";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setUser(session?.user ?? null);
+      }
+    );
+
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+  };
 
   const navLinks = [
     { label: "Problem", href: "#problem" },
@@ -43,10 +65,23 @@ const Navbar = () => {
           </div>
 
           {/* Desktop CTA */}
-          <div className="hidden md:block">
-            <a href="#demo" className="btn-primary text-sm">
-              View Demo
-            </a>
+          <div className="hidden md:flex items-center gap-3">
+            {user ? (
+              <button
+                onClick={handleSignOut}
+                className="flex items-center gap-2 text-muted-foreground hover:text-foreground font-medium transition-colors"
+              >
+                <LogOut className="w-4 h-4" />
+                Sign Out
+              </button>
+            ) : (
+              <Link
+                to="/auth"
+                className="btn-primary text-sm"
+              >
+                Sign In
+              </Link>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -77,9 +112,23 @@ const Navbar = () => {
                   {link.label}
                 </a>
               ))}
-              <a href="#demo" className="btn-primary text-center mt-2">
-                View Demo
-              </a>
+              {user ? (
+                <button
+                  onClick={handleSignOut}
+                  className="btn-primary text-center mt-2 flex items-center justify-center gap-2"
+                >
+                  <LogOut className="w-4 h-4" />
+                  Sign Out
+                </button>
+              ) : (
+                <Link
+                  to="/auth"
+                  onClick={() => setIsOpen(false)}
+                  className="btn-primary text-center mt-2"
+                >
+                  Sign In
+                </Link>
+              )}
             </div>
           </div>
         )}
