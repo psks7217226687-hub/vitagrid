@@ -14,6 +14,54 @@ export type Database = {
   }
   public: {
     Tables: {
+      emergency_profiles: {
+        Row: {
+          additional_notes: string | null
+          allergies: string[] | null
+          blood_type: string | null
+          created_at: string
+          date_of_birth: string | null
+          emergency_contact_name: string | null
+          emergency_contact_phone: string | null
+          full_name: string
+          id: string
+          medical_conditions: string[] | null
+          medications: string[] | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          additional_notes?: string | null
+          allergies?: string[] | null
+          blood_type?: string | null
+          created_at?: string
+          date_of_birth?: string | null
+          emergency_contact_name?: string | null
+          emergency_contact_phone?: string | null
+          full_name: string
+          id?: string
+          medical_conditions?: string[] | null
+          medications?: string[] | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          additional_notes?: string | null
+          allergies?: string[] | null
+          blood_type?: string | null
+          created_at?: string
+          date_of_birth?: string | null
+          emergency_contact_name?: string | null
+          emergency_contact_phone?: string | null
+          full_name?: string
+          id?: string
+          medical_conditions?: string[] | null
+          medications?: string[] | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       health_records: {
         Row: {
           created_at: string
@@ -50,12 +98,52 @@ export type Database = {
         }
         Relationships: []
       }
+      shared_access_links: {
+        Row: {
+          access_token: string
+          created_at: string
+          expires_at: string
+          id: string
+          is_active: boolean
+          user_id: string
+        }
+        Insert: {
+          access_token?: string
+          created_at?: string
+          expires_at: string
+          id?: string
+          is_active?: boolean
+          user_id: string
+        }
+        Update: {
+          access_token?: string
+          created_at?: string
+          expires_at?: string
+          id?: string
+          is_active?: boolean
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_emergency_profile_by_token: {
+        Args: { token: string }
+        Returns: {
+          additional_notes: string
+          allergies: string[]
+          blood_type: string
+          date_of_birth: string
+          emergency_contact_name: string
+          emergency_contact_phone: string
+          full_name: string
+          medical_conditions: string[]
+          medications: string[]
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never
